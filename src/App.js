@@ -8,7 +8,7 @@ import {
 import './style.css';
 
 const App = () => {
-  const [imageUrl, setImageUrl] = useState(null);
+  const [imageObject, setImageObject] = useState(null);
 
   useEffect(() => {
     getImageHandler();
@@ -16,10 +16,17 @@ const App = () => {
 
   const getImageHandler = () => {
     getImageMethod().then(res => {
-      if (res?.status <= 200) {
-        setImageUrl(`data:image/jpeg;base64,${res.data.image}`)
+      if (res?.success) {
+        if (res.randomImage._id === imageObject?._id) {
+          getImageHandler();
+        } else {
+          setImageObject({
+            ...res.randomImage,
+            image: `data:image/jpeg;base64,${res.randomImage.image}`
+          })
+        }
       } else {
-        console.log('Something went wrong, try again');
+        console.log(res?.message || 'Something went wrong, try again');
       }
     })
   }
@@ -31,14 +38,12 @@ const App = () => {
     data.append('file', uploadedImage, uploadedImage.name);
 
     uploadImageMethod(data).then(res => {
-      if (res?.status <= 200) {
-        console.log(res.data);
-
-        if (!imageUrl) {
+      if (res?.success) {
+        if (!imageObject) {
           getImageHandler()
         }
       } else {
-        console.log('Something went wrong, try again');
+        console.log(res?.message || 'Something went wrong, try again');
       }
 
       event.target.value = '';
@@ -49,7 +54,7 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <img 
-          src={imageUrl}
+          src={imageObject?.image}
           alt="Loading..."
           className="App-logo"
           onClick={() => getImageHandler()}

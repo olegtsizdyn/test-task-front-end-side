@@ -13,18 +13,12 @@ export const uploadImageMethod = (data) => {
         'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
       }
     }
-  ).then(response => ({
-    status: response.status,
-    data: response.data
-  }))
-  .catch(error => error);
+  ).then(response => response.data)
+  .catch(error => error.response.data);
 }
 
 export const getImageMethod = () => {
   return axios.get(`${SERVEL_URL}/randomimage`)
-  .then(response => ({
-    status: response.status,
-    data: response.data
-  }))
-  .catch(error => error);
+  .then(response => response.data)
+  .catch(error => error.response.data);
 }
