@@ -22,3 +22,9 @@ export const getImageMethod = () => {
   .then(response => response.data)
   .catch(error => error.response.data);
 }
+
+export const deleteImageMethod = (imageId) => {
+  return axios.delete(`${SERVEL_URL}/randomimage/${imageId}`)
+  .then(response => response.data)
+  .catch(error => error.response.data);
+}

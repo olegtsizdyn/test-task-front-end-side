@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import {
   getImageMethod,
   uploadImageMethod,
+  deleteImageMethod
 } from './api';
 
 import './style.css';
@@ -50,9 +51,25 @@ const App = () => {
     })
   }
 
+  const deleteImageHandler = (imageId) => {
+    deleteImageMethod(imageId).then(res => {
+      if (res?.success) {
+        getImageHandler();
+      } else  {
+        console.log(res?.message || 'Something went wrong, try again');
+      }
+    })
+  }
+
   return (
     <div className="App">
       <header className="App-header">
+        <button
+          className='delete-button'
+          onClick={() => deleteImageHandler(imageObject?._id)}
+        >
+          Delete image
+        </button>
         <img 
           src={imageObject?.image}
           alt="Loading..."
