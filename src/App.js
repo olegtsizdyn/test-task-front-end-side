@@ -64,12 +64,14 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <button
-          className='delete-button'
-          onClick={() => deleteImageHandler(imageObject?._id)}
-        >
-          Delete image
-        </button>
+        {imageObject &&
+          <button
+            className='delete-button'
+            onClick={() => deleteImageHandler(imageObject?._id)}
+          >
+            Delete image
+          </button>
+        }
         <img 
           src={imageObject?.image}
           alt="Loading..."
